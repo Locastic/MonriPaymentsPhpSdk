@@ -12,29 +12,21 @@ class Payment
 
     private string $currency;
 
-    private string $transactionType;
-
     private string $orderInfo;
 
-    private string $scenario;
-
-    private string $supportedPaymentMethods;
+    private array $supportedPaymentMethods;
 
     public function __construct(
         int $amount,
         string $orderNumber,
         string $currency,
-        string $transactionType,
         string $orderInfo,
-        string $scenario,
-        string $supportedPaymentMethods
+        array $supportedPaymentMethods
     ) {
         $this->amount = $amount;
         $this->orderNumber = $orderNumber;
         $this->currency = $currency;
-        $this->transactionType = $transactionType;
         $this->orderInfo = $orderInfo;
-        $this->scenario = $scenario;
         $this->supportedPaymentMethods = $supportedPaymentMethods;
     }
 
@@ -44,10 +36,8 @@ class Payment
             'amount' => $this->amount,
             'order_number' => $this->orderNumber,
             'currency' => $this->currency,
-            'transaction_type' => $this->transactionType,
             'order_info' => $this->orderInfo,
-            'scenario' => $this->scenario,
-            'supported_payment_methods' => ['67f35b84811188a5c581b063c4f21bd6760c93b2a04d7ac4f8845dd5bbb3f5c6'],
+            'supported_payment_methods' => $this->supportedPaymentMethods,
         ];
     }
 }
