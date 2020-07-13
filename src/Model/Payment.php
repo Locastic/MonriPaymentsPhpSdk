@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Locastic\MonriPayments;
+namespace Locastic\MonriPayments\Model;
 
 class Payment
 {

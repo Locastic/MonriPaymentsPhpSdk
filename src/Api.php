@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Locastic\MonriPayments;
 
+use Locastic\MonriPayments\Model\Payment;
+
 class Api
 {
     private bool $sandbox;
