@@ -1,0 +1,25 @@
+{
+    "name": "locastic/monri-payments-sdk",
+    "description": "Monri payments components PHP SDK",
+    "keywords": ["monri", "payments", "componenets", "php", "sdk"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Locastic",
+            "email": "info@locastic.com"
+        }
+    ],
+    "type": "project",
+    "require": {
+		"php": ">=7.4",
+        "guzzlehttp/guzzle": "^7.0"
+    },
+    "require-dev": {
+		"phpunit/phpunit": "6.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Locastic\\MonriPayments\\": "src/"
+        }
+    }
+}
