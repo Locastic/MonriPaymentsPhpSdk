@@ -48,8 +48,9 @@ class Api
     public function addPaymentMethod(Payment $payment): ResponseInterface
     {
         $data = $payment->getAsArray();
-        $data['transaction_type'] = 'charge';
+        $data['transaction_type'] = 'purchase';
         $data['scenario'] = 'add_payment_method';
+        unset($data['supported_payment_methods']);
 
         return $this->doCall('POST', $data);
     }
