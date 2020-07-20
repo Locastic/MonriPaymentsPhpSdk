@@ -32,6 +32,10 @@ class Api
         $data['transaction_type'] = 'authorize';
         $data['scenario'] = 'charge';
 
+        if (empty($data['supported_payment_methods'])) {
+            unset($data['supported_payment_methods']);
+        }
+
         return $this->doCall('POST', $data);
     }
 
@@ -40,7 +44,10 @@ class Api
         $data = $payment->getAsArray();
         $data['transaction_type'] = 'purchase';
         $data['scenario'] = 'charge';
-        unset($data['supported_payment_methods']);
+
+        if (empty($data['supported_payment_methods'])) {
+            unset($data['supported_payment_methods']);
+        }
 
         return $this->doCall('POST', $data);
     }
@@ -50,7 +57,10 @@ class Api
         $data = $payment->getAsArray();
         $data['transaction_type'] = 'purchase';
         $data['scenario'] = 'add_payment_method';
-        unset($data['supported_payment_methods']);
+
+        if (empty($data['supported_payment_methods'])) {
+            unset($data['supported_payment_methods']);
+        }
 
         return $this->doCall('POST', $data);
     }
