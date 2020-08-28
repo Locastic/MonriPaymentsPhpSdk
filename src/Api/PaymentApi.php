@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Locastic\MonriPayments;
+namespace Locastic\MonriPayments\Api;
 
 use GuzzleHttp\Client;
 use Locastic\MonriPayments\Model\Payment;
 use Psr\Http\Message\ResponseInterface;
 
-class Api
+class PaymentApi
 {
     private bool $sandbox;
 
@@ -39,7 +39,44 @@ class Api
         return $this->doCall('POST', $data);
     }
 
-    public function capture(Payment $payment): ResponseInterface
+    private function doCall(string $method, $data): ResponseInterface
+    {
+        $uri = $this->getApiEndpoint().'/v2/payment/new';
+        $dataAsString = json_encode($data);
+
+        $response = $this->client->request(
+            $method,
+            $uri,
+            [
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'Authorization' => $this->getAuthorization($dataAsString),
+                ],
+                'body' => $dataAsString,
+            ]
+        );
+
+        return $response;
+    }
+
+    private function getApiEndpoint(): string
+    {
+        if ($this->sandbox) {
+            return 'https://ipgtest.monri.com';
+        }
+
+        return 'https://ipg.monri.com';
+    }
+
+    private function getAuthorization(string $dataAsString): string
+    {
+        $timestamp = time();
+        $digest = hash('sha512', $this->merchantKey.$timestamp.$this->authenticityToken.$dataAsString);
+
+        return sprintf('WP3-v2 %s %s %s', $this->authenticityToken, $timestamp, $digest);
+    }
+
+    public function purchase(Payment $payment): ResponseInterface
     {
         $data = $payment->getAsArray();
         $data['transaction_type'] = 'purchase';
@@ -63,42 +100,5 @@ class Api
         }
 
         return $this->doCall('POST', $data);
-    }
-
-    private function getApiEndpoint(): string
-    {
-        if ($this->sandbox) {
-            return 'https://ipgtest.monri.com';
-        }
-
-        return 'https://ipg.monri.com';
-    }
-
-    private function getAuthorization(string $dataAsString): string
-    {
-        $timestamp = time();
-        $digest = hash('sha512', $this->merchantKey.$timestamp.$this->authenticityToken.$dataAsString);
-
-        return sprintf('WP3-v2 %s %s %s', $this->authenticityToken, $timestamp, $digest);
-    }
-
-    private function doCall(string $method, $data): ResponseInterface
-    {
-        $uri = $this->getApiEndpoint().'/v2/payment/new';
-        $dataAsString = json_encode($data);
-
-        $response = $this->client->request(
-            $method,
-            $uri,
-            [
-                'headers' => [
-                    'Content-Type' => 'application/json',
-                    'Authorization' => $this->getAuthorization($dataAsString),
-                ],
-                'body' => $dataAsString,
-            ]
-        );
-
-        return $response;
     }
 }

@@ -40,4 +40,19 @@ class Payment
             'supported_payment_methods' => $this->supportedPaymentMethods,
         ];
     }
+
+    public function getOrderNumber(): string
+    {
+        return $this->orderNumber;
+    }
+
+    public function getCurrency(): string
+    {
+        return $this->currency;
+    }
+
+    public function getAmount(): int
+    {
+        return $this->amount;
+    }
 }
