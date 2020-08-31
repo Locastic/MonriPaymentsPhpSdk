@@ -39,6 +39,32 @@ class PaymentApi
         return $this->doCall('POST', $data);
     }
 
+    public function purchase(Payment $payment): ResponseInterface
+    {
+        $data = $payment->getAsArray();
+        $data['transaction_type'] = 'purchase';
+        $data['scenario'] = 'charge';
+
+        if (empty($data['supported_payment_methods'])) {
+            unset($data['supported_payment_methods']);
+        }
+
+        return $this->doCall('POST', $data);
+    }
+
+    public function addPaymentMethod(Payment $payment): ResponseInterface
+    {
+        $data = $payment->getAsArray();
+        $data['transaction_type'] = 'purchase';
+        $data['scenario'] = 'add_payment_method';
+
+        if (empty($data['supported_payment_methods'])) {
+            unset($data['supported_payment_methods']);
+        }
+
+        return $this->doCall('POST', $data);
+    }
+
     private function doCall(string $method, $data): ResponseInterface
     {
         $uri = $this->getApiEndpoint().'/v2/payment/new';
@@ -74,31 +100,5 @@ class PaymentApi
         $digest = hash('sha512', $this->merchantKey.$timestamp.$this->authenticityToken.$dataAsString);
 
         return sprintf('WP3-v2 %s %s %s', $this->authenticityToken, $timestamp, $digest);
-    }
-
-    public function purchase(Payment $payment): ResponseInterface
-    {
-        $data = $payment->getAsArray();
-        $data['transaction_type'] = 'purchase';
-        $data['scenario'] = 'charge';
-
-        if (empty($data['supported_payment_methods'])) {
-            unset($data['supported_payment_methods']);
-        }
-
-        return $this->doCall('POST', $data);
-    }
-
-    public function addPaymentMethod(Payment $payment): ResponseInterface
-    {
-        $data = $payment->getAsArray();
-        $data['transaction_type'] = 'purchase';
-        $data['scenario'] = 'add_payment_method';
-
-        if (empty($data['supported_payment_methods'])) {
-            unset($data['supported_payment_methods']);
-        }
-
-        return $this->doCall('POST', $data);
     }
 }
