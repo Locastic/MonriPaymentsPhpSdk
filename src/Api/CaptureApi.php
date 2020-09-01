@@ -33,7 +33,7 @@ class CaptureApi
 
     private function doCall(string $method, Payment $payment): ResponseInterface
     {
-        $uri = $this->getApiEndpoint().sprintf('/transactions/%s/capture.xml,', $payment->getOrderNumber());
+        $uri = $this->getApiEndpoint().sprintf('/transactions/%s/capture.xml', $payment->getOrderNumber());
 
         return $this->client->request(
             $method,
