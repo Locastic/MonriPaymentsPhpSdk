@@ -78,7 +78,7 @@ class CaptureApi
     private function getDigest(Payment $payment): string
     {
         return hash(
-            'sha512',
+            'sha1',
             $this->merchantKey.$payment->getOrderNumber().$payment->getAmount().$payment->getCurrency()
         );
     }
