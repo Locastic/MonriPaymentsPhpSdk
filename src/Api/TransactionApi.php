@@ -8,7 +8,7 @@ use GuzzleHttp\Client;
 use Locastic\MonriPayments\Model\Payment;
 use Psr\Http\Message\ResponseInterface;
 
-class CaptureApi
+class TransactionApi
 {
     private bool $sandbox;
 
@@ -28,12 +28,22 @@ class CaptureApi
 
     public function capture(Payment $payment): ResponseInterface
     {
-        return $this->doCall('POST', $payment);
+        return $this->doCall('POST', 'capture', $payment);
     }
 
-    private function doCall(string $method, Payment $payment): ResponseInterface
+    public function void(Payment $payment): ResponseInterface
     {
-        $uri = $this->getApiEndpoint().sprintf('/transactions/%s/capture.xml', $payment->getOrderNumber());
+        return $this->doCall('POST', 'void', $payment);
+    }
+
+    public function refund(Payment $payment): ResponseInterface
+    {
+        return $this->doCall('POST', 'refund', $payment);
+    }
+
+    private function doCall(string $method, string $endpoint, Payment $payment): ResponseInterface
+    {
+        $uri = $this->getApiEndpoint().sprintf('/transactions/%s/%s.xml', $payment->getOrderNumber(), $endpoint);
 
         return $this->client->request(
             $method,
