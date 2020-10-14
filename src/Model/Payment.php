@@ -41,9 +41,24 @@ class Payment
         ];
     }
 
+    public function getAmount(): int
+    {
+        return $this->amount;
+    }
+
+    public function setAmount(int $amount): void
+    {
+        $this->amount = $amount;
+    }
+
     public function getOrderNumber(): string
     {
         return $this->orderNumber;
+    }
+
+    public function setOrderNumber(string $orderNumber): void
+    {
+        $this->orderNumber = $orderNumber;
     }
 
     public function getCurrency(): string
@@ -51,8 +66,28 @@ class Payment
         return $this->currency;
     }
 
-    public function getAmount(): int
+    public function setCurrency(string $currency): void
     {
-        return $this->amount;
+        $this->currency = $currency;
+    }
+
+    public function getOrderInfo(): string
+    {
+        return $this->orderInfo;
+    }
+
+    public function setOrderInfo(string $orderInfo): void
+    {
+        $this->orderInfo = $orderInfo;
+    }
+
+    public function getSupportedPaymentMethods(): array
+    {
+        return $this->supportedPaymentMethods;
+    }
+
+    public function setSupportedPaymentMethods(array $supportedPaymentMethods): void
+    {
+        $this->supportedPaymentMethods = $supportedPaymentMethods;
     }
 }
