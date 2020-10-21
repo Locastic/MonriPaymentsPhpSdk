@@ -13,9 +13,9 @@ class WebHookValidator
         $this->merchantKey = $merchantKey;
     }
 
-    public function validate(string $authorization, array $data): bool
+    public function validate(string $authorization, string $data): bool
     {
-        $digest = hash('sha512', $this->merchantKey.json_encode($data));
+        $digest = hash('sha512', $this->merchantKey.$data);
         $authorization = str_replace('WP3-callback ', '', $authorization);
 
         if ($digest === $authorization) {
